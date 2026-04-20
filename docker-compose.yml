@@ -1,0 +1,16 @@
+services:
+  postgres:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_USER: lucy
+      POSTGRES_PASSWORD: lucy
+      POSTGRES_DB: lucy_test
+    ports:
+      - "${POSTGRES_HOST_PORT:-5432}:5432"
+    volumes:
+      - ./db:/docker-entrypoint-initdb.d:ro
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U lucy -d lucy_test"]
+      interval: 2s
+      timeout: 5s
+      retries: 10
